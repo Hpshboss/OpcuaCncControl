@@ -9,7 +9,7 @@ namespace UdpClientStructure
     {
         static void Main(string[] args)
         {
-            IPAddress localAddress = IPAddress.Parse("127.0.0.1");
+            IPAddress localAddress = IPAddress.Parse("192.168.0.101");
             IPAddress destAddress = null;
             ushort portNumber = 5150;
             bool udpSender = false;
@@ -54,7 +54,8 @@ namespace UdpClientStructure
                     while (true)
                     {
                         receiveBuffer = udpSocket.Receive(ref senderEndPoint);
-                        Console.WriteLine("Read {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
+                        Console.WriteLine("Read string \"{0}\"", Encoding.ASCII.GetString(receiveBuffer));
+                        Console.WriteLine("It is {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
 
 
                         //if (receiveBuffer.Length == 0)
