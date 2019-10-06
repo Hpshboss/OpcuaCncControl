@@ -47,7 +47,15 @@ namespace UdpClientStructure
                         byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
                         Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
                     }
-                    while(true)
+
+                    TransferInfo InfoContent = new TransferInfo(1000,2,3,4,5);
+                    string Value__ = Convert.ToString(InfoContent.ID, 16);
+                    Padding ModifiedValue = new Padding(Value__, 2);
+                    sendBuffer = Encoding.ASCII.GetBytes(ModifiedValue.GOGO());
+                    byteSize = udpSocket.Send(sendBuffer, Encoding.ASCII.GetByteCount(ModifiedValue.GOGO()));
+                    Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+
+                    while (true)
                     {
                         Console.Write("What do you want to send:");
                         sendBuffer = Encoding.ASCII.GetBytes(Console.ReadLine());
