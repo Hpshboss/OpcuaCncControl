@@ -10,7 +10,7 @@ namespace UdpClientStructure
         static void Main(string[] args)
         {
             IPAddress localAddress = IPAddress.Any;
-            IPAddress destAddress = IPAddress.Parse("127.0.0.1");
+            IPAddress destAddress = IPAddress.Parse("192.168.0.101");
             ushort portNumber = 5150;
             bool udpSender = true;
             int bufferSize = 256;
@@ -43,7 +43,14 @@ namespace UdpClientStructure
 
 
                     sendBuffer = Encoding.ASCII.GetBytes("Hello world");
-                    for(int i=0; i<100; i++){
+                    for(int i=0; i<5; i++){
+                        byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
+                        Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+                    }
+                    while(true)
+                    {
+                        Console.Write("What do you want to send:");
+                        sendBuffer = Encoding.ASCII.GetBytes(Console.ReadLine());
                         byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
                         Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
                     }
