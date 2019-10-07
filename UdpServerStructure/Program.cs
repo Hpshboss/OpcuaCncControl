@@ -1,7 +1,10 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace UdpClientStructure
 {
@@ -9,11 +12,11 @@ namespace UdpClientStructure
     {
         static void Main(string[] args)
         {
-            IPAddress localAddress = IPAddress.Parse("192.168.0.101");
-            IPAddress destAddress = null;
+            IPAddress localAddress = IPAddress.Any;
+            IPAddress destAddress = IPAddress.Parse("192.168.0.101");
             ushort portNumber = 5150;
-            bool udpSender = false;
-            int bufferSize = 256;
+            bool udpSender = true;
+            int bufferSize = 512;
 
             UdpClient udpSocket = null;
             byte[] sendBuffer = new byte[bufferSize], receiveBuffer = new byte[bufferSize];
@@ -41,10 +44,17 @@ namespace UdpClientStructure
                 {
                     Console.WriteLine("Sending the requested number of packets to the destination, Send()...");
 
-                    sendBuffer = Encoding.ASCII.GetBytes("Hello world");
-
-                    byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
-                    Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+                    TransferInfo InfoContent = new TransferInfo(1000, 2, 3, 4, 5);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        IFormatter bf = new BinaryFormatter();
+                        MemoryStream stream = new MemoryStream();
+                        bf.Serialize(stream, InfoContent);
+                        sendBuffer = stream.ToArray();
+                        byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
+                        Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+                        stream.Close();
+                    }
                 }
                 else
                 {
@@ -54,12 +64,10 @@ namespace UdpClientStructure
                     while (true)
                     {
                         receiveBuffer = udpSocket.Receive(ref senderEndPoint);
-                        Console.WriteLine("Read string \"{0}\"", Encoding.ASCII.GetString(receiveBuffer));
-                        Console.WriteLine("It is {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
+                        Console.WriteLine("Read {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
 
-
-                        //if (receiveBuffer.Length == 0)
-                        //    break;
+                        if (receiveBuffer.Length == 0)
+                            break;
                     }
                 }
             }
