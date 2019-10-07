@@ -1,1 +1,2 @@
 # OpcuaCncControl
+UdpStructure資料夾為最終UDP基本傳輸CLASS架構
