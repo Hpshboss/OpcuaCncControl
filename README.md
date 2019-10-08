@@ -1,4 +1,8 @@
 # OpcuaCncControl
-## UdpStructure資料夾為最終UDP基本傳輸CLASS架構
-註:
-1.傳輸端與接收端的Solution Name必須相同
+## UdpClientStructure資料夾為客戶端基本架構
+1.以BinaryWriter為傳輸方法
+## UdpServerStructure資料夾為客戶端基本架構
+1.以BinaryReader為接收方法
+## UdpStructure資料夾為UDP基本傳輸CLASS架構
+1.以BinaryWriter為傳輸與接收方法
+2.但但但但目前傳輸端與接收端的Solution Name必須相同
