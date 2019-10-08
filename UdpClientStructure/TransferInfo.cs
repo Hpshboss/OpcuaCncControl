@@ -4,6 +4,7 @@ using System.Text;
 
 namespace UdpClientStructure
 {
+    [Serializable]
     public class TransferInfo
     {
         public ushort ID;
