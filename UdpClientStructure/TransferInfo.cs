@@ -42,7 +42,7 @@ namespace UdpClientStructure
         public ushort ID;
         public ushort Sz;
         public byte Cmd;
-        public short Count;
+        public ushort Count;
         public byte Sum; //its type is char originally
     }
 
@@ -80,22 +80,22 @@ namespace UdpClientStructure
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public class MachConnectCmdPacket
     {
-        public int ID;
-        public int Sz;
-        public int Cmd;
-        public int Count;
-        public int DataSz;
-        public int DataCmd0;
-        public int DataCmd1;
-        public int Part;
-        public int ver1;
-        public int ver2;
-        public int BugFix;
-        public int TypeID;
-        public int SubTypeID;
+        public ushort ID;
+        public ushort Sz;
+        public byte Cmd;
+        public ushort Count;
+        public ushort DataSz;
+        public byte DataCmd0;
+        public byte DataCmd1;
+        public uint Part;
+        public byte ver1;
+        public byte ver2;
+        public ushort BugFix;
+        public byte TypeID;
+        public byte SubTypeID;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-        public char[] Password = new char[60];
-        public int Sum;
+        public byte[] Password = new byte[60];
+        public byte Sum;
     }
 
     [Serializable]
@@ -119,19 +119,19 @@ namespace UdpClientStructure
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public class MachDataCmdPacket
     {
-        public int ID;
-        public int Sz;
-        public int Cmd;
-        public int Count;
-        public int DataSz;
-        public int DataCmd0;
-        public int DataCmd1;
-        public int Part;
-        public int Code;
-        public int Len;
+        public ushort ID;
+        public ushort Sz;
+        public byte Cmd;
+        public ushort Count;
+        public ushort DataSz;
+        public byte DataCmd0;
+        public byte DataCmd1;
+        public uint Part;
+        public uint Code;
+        public uint Len;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 800)]
-        public char[] DataBuf = new char[800];
-        public int Sum;
+        public byte[] DataBuf = new byte[800];
+        public byte Sum;
     }
 
     [Serializable]
@@ -145,12 +145,12 @@ namespace UdpClientStructure
         public int DataSz;
         public int DataCmd0;
         public int DataCmd1;
-        public int Part;
-        public int Code;
-        public int Len;
-        public int ActctLen;
+        public uint Part;
+        public uint Code;
+        public uint Len;
+        public uint ActctLen;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 800)]
-        public char[] DataBuf = new char[800];
+        public byte[] DataBuf = new byte[800];
         public int Sum;
     }
 
