@@ -44,6 +44,7 @@ namespace UdpClientStructure
             UdpClient udpSocket = null;
             byte[] sendBuffer = new byte[bufferSize], receiveBuffer = new byte[bufferSize];
             int byteSize;
+            ushort cmdState = 0;
 
             try
             {
@@ -67,49 +68,252 @@ namespace UdpClientStructure
 
                     if (udpSender == true)
                     {
-                        Console.WriteLine("Sending the requested number of packets to the destination, Send()...");
+                        if (cmdState == 0)
+                        {
+                            Console.WriteLine("Sending the requested number of packets to the destination, Send()...");
 
-                        MemoryStream stream = new MemoryStream();
-                        BinaryWriter bw = new BinaryWriter(stream);
-                        Console.WriteLine(ScanCmdPack.Sum);
-                        bw.Write(ScanCmdPack.ID);
-                        bw.Write(ScanCmdPack.Sz);
-                        bw.Write(ScanCmdPack.Cmd);
-                        bw.Write(ScanCmdPack.Count);
-                        bw.Write(ScanCmdPack.Sum);
-                        sendBuffer = stream.ToArray();
-                        byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
-                        Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
-                        stream.Close();
-                        udpSender = false;
-                        Console.WriteLine("Change to receiving mode");
+                            MemoryStream stream = new MemoryStream();
+                            BinaryWriter bw = new BinaryWriter(stream);
+                            Console.WriteLine(ScanCmdPack.Sum);
+                            bw.Write(ScanCmdPack.ID);
+                            bw.Write(ScanCmdPack.Sz);
+                            bw.Write(ScanCmdPack.Cmd);
+                            bw.Write(ScanCmdPack.Count);
+                            bw.Write(ScanCmdPack.Sum);
 
+                            sendBuffer = stream.ToArray();
+                            byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
+                            cmdState = (ushort)ME.scan;
+
+                            Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+                            stream.Close();
+                            udpSender = false;
+                            Console.WriteLine("Change to receiving mode");
+                        }
+
+                        if (cmdState == (ushort)ME.scanE)
+                        {
+                            Console.WriteLine("Sending the requested number of packets to the destination, Send()...");
+
+                            MemoryStream stream = new MemoryStream();
+                            BinaryWriter bw = new BinaryWriter(stream);
+                            Console.WriteLine(ScanCmdPack.Sum);
+                            bw.Write(MachIDCmdPack.ID);
+                            bw.Write(MachIDCmdPack.Sz);
+                            bw.Write(MachIDCmdPack.Cmd);
+                            bw.Write(MachIDCmdPack.Count);
+                            bw.Write(MachIDCmdPack.Sum);
+
+                            sendBuffer = stream.ToArray();
+                            byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
+                            cmdState = (ushort)ME.machid;
+
+                            Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+                            stream.Close();
+                            udpSender = false;
+                            Console.WriteLine("Change to receiving mode");
+                        }
+
+                        if (cmdState == (ushort)ME.machidE)
+                        {
+                            Console.WriteLine("Sending the requested number of packets to the destination, Send()...");
+
+                            MemoryStream stream = new MemoryStream();
+                            BinaryWriter bw = new BinaryWriter(stream);
+                            Console.WriteLine(ScanCmdPack.Sum);
+                            bw.Write(MachConnectCmdPack.ID);
+                            bw.Write(MachConnectCmdPack.Sz);
+                            bw.Write(MachConnectCmdPack.Cmd);
+                            bw.Write(MachConnectCmdPack.Count);
+                            bw.Write(MachConnectCmdPack.DataSz);
+                            bw.Write(MachConnectCmdPack.DataCmd0);
+                            bw.Write(MachConnectCmdPack.DataCmd1);
+                            bw.Write(MachConnectCmdPack.Part);
+                            bw.Write(MachConnectCmdPack.ver1);
+                            bw.Write(MachConnectCmdPack.ver2);
+                            bw.Write(MachConnectCmdPack.BugFix);
+                            bw.Write(MachConnectCmdPack.TypeID);
+                            bw.Write(MachConnectCmdPack.SubTypeID);
+                            bw.Write(MachConnectCmdPack.Password);
+                            bw.Write(MachConnectCmdPack.Sum);
+
+                            sendBuffer = stream.ToArray();
+                            byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
+                            cmdState = (ushort)ME.machcon;
+
+                            Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+                            stream.Close();
+                            udpSender = false;
+                            Console.WriteLine("Change to receiving mode");
+                        }
+
+                        if (cmdState == (ushort)ME.machconE)
+                        {
+                            Console.WriteLine("Sending the requested number of packets to the destination, Send()...");
+
+                            MemoryStream stream = new MemoryStream();
+                            BinaryWriter bw = new BinaryWriter(stream);
+                            Console.WriteLine(ScanCmdPack.Sum);
+                            bw.Write(MachDataCmdPack.ID);
+                            bw.Write(MachDataCmdPack.Sz);
+                            bw.Write(MachDataCmdPack.Cmd);
+                            bw.Write(MachDataCmdPack.Count);
+                            bw.Write(MachDataCmdPack.DataSz);
+                            bw.Write(MachDataCmdPack.DataCmd0);
+                            bw.Write(MachDataCmdPack.DataCmd1);
+                            bw.Write(MachDataCmdPack.Part);
+                            bw.Write(MachDataCmdPack.Code);
+                            bw.Write(MachDataCmdPack.Len);
+                            bw.Write(MachDataCmdPack.DataBuf);
+                            bw.Write(MachDataCmdPack.Sum);
+
+                            sendBuffer = stream.ToArray();
+                            byteSize = udpSocket.Send(sendBuffer, sendBuffer.Length);
+                            cmdState = (ushort)ME.machdata;
+
+                            Console.WriteLine("Sent {0} bytes to {1}", byteSize, destAddress.ToString());
+                            stream.Close();
+                            udpSender = false;
+                            Console.WriteLine("Change to receiving mode");
+                        }
                     }
                     else
                     {
                         IPEndPoint senderEndPoint = new IPEndPoint(localAddress, 0);
                         Console.WriteLine("Receiving datagrams in a loop...");
 
-                        while (true)
+                        if (cmdState == (ushort)ME.scan)
                         {
                             receiveBuffer = udpSocket.Receive(ref senderEndPoint);
-                            MemoryStream stream = new MemoryStream(receiveBuffer);
-                            /*
-                            Console.WriteLine("Read string \"{0}\"", Encoding.ASCII.GetString(receiveBuffer));
-                            */
+                            cmdState = (ushort)ME.scanE;
                             Console.WriteLine("It is {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
+
+                            MemoryStream stream = new MemoryStream(receiveBuffer);
                             BinaryReader br = new BinaryReader(stream);
-                            TransferInfo InfoContentReceived = new TransferInfo(0, 0, 0, 0, 0);
-                            InfoContentReceived.ID = BitConverter.ToUInt16(br.ReadBytes(2));
-                            InfoContentReceived.Sz = BitConverter.ToUInt16(br.ReadBytes(2));
-                            InfoContentReceived.Cmd = br.ReadByte();
-                            InfoContentReceived.Count = BitConverter.ToUInt16(br.ReadBytes(2));
-                            InfoContentReceived.Sum = br.ReadByte();
-                            Console.WriteLine("Receive ID = {0}", InfoContentReceived.ID);
-                            Console.WriteLine("Receive Sz = {0}", InfoContentReceived.Sz);
-                            Console.WriteLine("Receive Cmd = {0}", InfoContentReceived.Cmd);
-                            Console.WriteLine("Receive Count = {0}", InfoContentReceived.Count);
-                            Console.WriteLine("Receive Sum = {0}", InfoContentReceived.Sum);
+
+                            ScanEchoPack.ID = BitConverter.ToUInt16(br.ReadBytes(2));
+                            ScanEchoPack.Sz = BitConverter.ToUInt16(br.ReadBytes(2));
+                            ScanEchoPack.Cmd = br.ReadByte();
+                            ScanEchoPack.Count = BitConverter.ToUInt16(br.ReadBytes(2));
+                            ScanEchoPack.Sum = br.ReadByte();
+
+                            Console.WriteLine("Receive ID = {0}", ScanEchoPack.ID);
+                            Console.WriteLine("Receive Sz = {0}", ScanEchoPack.Sz);
+                            Console.WriteLine("Receive Cmd = {0}", ScanEchoPack.Cmd);
+                            Console.WriteLine("Receive Count = {0}", ScanEchoPack.Count);
+                            Console.WriteLine("Receive Sum = {0}", ScanEchoPack.Sum);
+
+                        }
+
+                        if (cmdState == (ushort)ME.machid)
+                        {
+                            receiveBuffer = udpSocket.Receive(ref senderEndPoint);
+                            cmdState = (ushort)ME.machidE;
+                            Console.WriteLine("It is {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
+
+                            MemoryStream stream = new MemoryStream(receiveBuffer);
+                            BinaryReader br = new BinaryReader(stream);
+
+                            MachIDEchoPack.ID = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachIDEchoPack.Sz = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachIDEchoPack.Cmd = br.ReadByte();
+                            MachIDEchoPack.Count = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachIDEchoPack.ID0 = br.ReadByte();
+                            MachIDEchoPack.Ver1 = br.ReadByte();
+                            MachIDEchoPack.Ver2 = br.ReadByte();
+                            MachIDEchoPack.BugFix = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachIDEchoPack.TypeID = br.ReadByte();
+                            MachIDEchoPack.SubTypeID = br.ReadByte();
+                            MachIDEchoPack.UserDef = br.ReadBytes(60);
+                            MachIDEchoPack.Sum = br.ReadByte();
+
+                            Console.WriteLine("Receive ID = {0}", MachIDEchoPack.ID);
+                            Console.WriteLine("Receive Sz = {0}", MachIDEchoPack.Sz);
+                            Console.WriteLine("Receive Cmd = {0}", MachIDEchoPack.Cmd);
+                            Console.WriteLine("Receive Count = {0}", MachIDEchoPack.Count);
+                            Console.WriteLine("Receive ID0 = {0}", MachIDEchoPack.ID0);
+                            Console.WriteLine("Receive Ver1 = {0}", MachIDEchoPack.Ver1);
+                            Console.WriteLine("Receive Ver2 = {0}", MachIDEchoPack.Ver2);
+                            Console.WriteLine("Receive BugFix = {0}", MachIDEchoPack.BugFix);
+                            Console.WriteLine("Receive TypeID = {0}", MachIDEchoPack.TypeID);
+                            Console.WriteLine("Receive SubTypeID = {0}", MachIDEchoPack.SubTypeID);
+                            Console.WriteLine("Receive UserDef");
+                            Console.WriteLine("Receive Sum = {0}", MachIDEchoPack.Sum);
+
+                        }
+
+                        if (cmdState == (ushort)ME.machcon)
+                        {
+                            receiveBuffer = udpSocket.Receive(ref senderEndPoint);
+                            cmdState = (ushort)ME.machconE;
+                            Console.WriteLine("It is {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
+
+                            MemoryStream stream = new MemoryStream(receiveBuffer);
+                            BinaryReader br = new BinaryReader(stream);
+
+                            MachConnectEchoPack.ID = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachConnectEchoPack.Sz = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachConnectEchoPack.Cmd = br.ReadByte();
+                            MachConnectEchoPack.Count = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachConnectEchoPack.DataSz = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachConnectEchoPack.DataCmd0 = br.ReadByte();
+                            MachConnectEchoPack.DataCmd1 = br.ReadByte();
+                            MachConnectEchoPack.Part = BitConverter.ToUInt16(br.ReadBytes(4));
+                            MachConnectEchoPack.Security = BitConverter.ToUInt16(br.ReadBytes(4));
+                            MachConnectEchoPack.MachID = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachConnectEchoPack.Sum = br.ReadByte();
+
+                            Console.WriteLine("Receive ID = {0}", MachConnectEchoPack.ID);
+                            Console.WriteLine("Receive Sz = {0}", MachConnectEchoPack.Sz);
+                            Console.WriteLine("Receive Cmd = {0}", MachConnectEchoPack.Cmd);
+                            Console.WriteLine("Receive Count = {0}", MachConnectEchoPack.Count);
+                            Console.WriteLine("Receive DataSz = {0}", MachConnectEchoPack.DataSz);
+                            Console.WriteLine("Receive DataCmd0 = {0}", MachConnectEchoPack.DataCmd0);
+                            Console.WriteLine("Receive DataCmd1 = {0}", MachConnectEchoPack.DataCmd1);
+                            Console.WriteLine("Receive Part = {0}", MachConnectEchoPack.Part);
+                            Console.WriteLine("Receive Security = {0}", MachConnectEchoPack.Security);
+                            Console.WriteLine("Receive MachID = {0}", MachConnectEchoPack.MachID);
+                            Console.WriteLine("Receive Sum = {0}", MachIDEchoPack.Sum);
+
+                        }
+
+                        if (cmdState == (ushort)ME.machdata)
+                        {
+                            receiveBuffer = udpSocket.Receive(ref senderEndPoint);
+                            cmdState = (ushort)ME.machdataE;
+                            Console.WriteLine("It is {0} bytes from {1}", receiveBuffer.Length, senderEndPoint.ToString());
+
+                            MemoryStream stream = new MemoryStream(receiveBuffer);
+                            BinaryReader br = new BinaryReader(stream);
+
+                            MachDataEchoPack.ID = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachDataEchoPack.Sz = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachDataEchoPack.Cmd = br.ReadByte();
+                            MachDataEchoPack.Count = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachDataEchoPack.DataSz = BitConverter.ToUInt16(br.ReadBytes(2));
+                            MachDataEchoPack.DataCmd0 = br.ReadByte();
+                            MachDataEchoPack.DataCmd1 = br.ReadByte();
+                            MachDataEchoPack.Part = BitConverter.ToUInt32(br.ReadBytes(4));
+                            MachDataEchoPack.Code = BitConverter.ToUInt32(br.ReadBytes(4));
+                            MachDataEchoPack.Len = BitConverter.ToUInt32(br.ReadBytes(4));
+                            MachDataEchoPack.ActctLen = BitConverter.ToUInt32(br.ReadBytes(4));
+                            MachDataEchoPack.DataBuf = br.ReadBytes(800);
+                            MachDataEchoPack.Sum = br.ReadByte();
+
+                            Console.WriteLine("Receive ID = {0}", MachDataEchoPack.ID);
+                            Console.WriteLine("Receive Sz = {0}", MachDataEchoPack.Sz);
+                            Console.WriteLine("Receive Cmd = {0}", MachDataEchoPack.Cmd);
+                            Console.WriteLine("Receive Count = {0}", MachDataEchoPack.Count);
+                            Console.WriteLine("Receive DataSz = {0}", MachDataEchoPack.DataSz);
+                            Console.WriteLine("Receive DataCmd0 = {0}", MachDataEchoPack.DataCmd0);
+                            Console.WriteLine("Receive DataCmd1 = {0}", MachDataEchoPack.DataCmd1);
+                            Console.WriteLine("Receive Part = {0}", MachDataEchoPack.Part);
+                            Console.WriteLine("Receive Code = {0}", MachDataEchoPack.Code);
+                            Console.WriteLine("Receive Len = {0}", MachDataEchoPack.Len);
+                            Console.WriteLine("Receive ActctLen = {0}", MachDataEchoPack.ActctLen);
+                            Console.WriteLine("Receive DataBuf");
+                            Console.WriteLine("Receive Sum = {0}", MachDataEchoPack.Sum);
+
                         }
                     }
                 }
@@ -168,15 +372,15 @@ namespace UdpClientStructure
             Array.Clear(MachConnectCmdPack.Password, 0x00, 60);
             for (int i = 0; i < 4; i++)
             {
-                MachConnectCmdPack.Password[i] = '0';
+                MachConnectCmdPack.Password[i] = (byte)0;
             }
-            int Sum3 = MachConnectCmdPack.ID + MachConnectCmdPack.Sz + MachConnectCmdPack.Cmd + MachConnectCmdPack.Count +
+            int Sum3 = (int)(MachConnectCmdPack.ID + MachConnectCmdPack.Sz + MachConnectCmdPack.Cmd + MachConnectCmdPack.Count +
                         MachConnectCmdPack.DataSz + MachConnectCmdPack.DataCmd0 + MachConnectCmdPack.DataCmd1 +
                         MachConnectCmdPack.Part + MachConnectCmdPack.ver1 + MachConnectCmdPack.ver2 + MachConnectCmdPack.BugFix +
-                        MachConnectCmdPack.TypeID + MachConnectCmdPack.SubTypeID;
+                        MachConnectCmdPack.TypeID + MachConnectCmdPack.SubTypeID);
 
             //+ Array.ConvertAll<char, int>(MachConnectCmdPack.Password, value => Convert.ToInt32(value));
-            MachConnectCmdPack.Sum = (0x100 - Sum3) & 0xFF;
+            MachConnectCmdPack.Sum = (byte)((0x100 - Sum3) & 0xFF);
 
             //   MachDataCmdPacket
             MachDataCmdPack.ID = 1;
@@ -190,10 +394,10 @@ namespace UdpClientStructure
             MachDataCmdPack.Len = 0x320;
             //memset((char*)MachDataCmdPack.DataBuf, 0x00, sizeof(DataSent));
             Array.Clear(MachDataCmdPack.DataBuf, 0x00, 800);
-            int Sum4 = MachDataCmdPack.ID + MachDataCmdPack.Sz + MachDataCmdPack.Cmd + MachDataCmdPack.DataSz +
+            int Sum4 = (int)(MachDataCmdPack.ID + MachDataCmdPack.Sz + MachDataCmdPack.Cmd + MachDataCmdPack.DataSz +
                        MachDataCmdPack.DataCmd0 + MachDataCmdPack.DataCmd1 + MachDataCmdPack.Part + MachDataCmdPack.Code
-                       + MachDataCmdPack.Len;
-            MachDataCmdPack.Sum = (0x100 - Sum4) & 0xFF;
+                       + MachDataCmdPack.Len);
+            MachDataCmdPack.Sum = (byte)((0x100 - Sum4) & 0xFF);
 
             Console.WriteLine($"ScanCmdPack is{0}", ScanCmdPack);
             Console.WriteLine($"MachIDCmdPack is{0}", MachIDCmdPack);
