@@ -176,6 +176,11 @@ namespace UdpClientStructure
                             udpSender = false;
                             Console.WriteLine("Change to receiving mode");
                         }
+
+                        if (cmdState == (ushort)ME.machdataE)
+                        {
+                            cmdState = (ushort)ME.ConnectEnd;
+                        }
                     }
                     else
                     {
@@ -203,6 +208,7 @@ namespace UdpClientStructure
                             Console.WriteLine("Receive Count = {0}", ScanEchoPack.Count);
                             Console.WriteLine("Receive Sum = {0}", ScanEchoPack.Sum);
 
+                            udpSender = true;
                         }
 
                         if (cmdState == (ushort)ME.machid)
@@ -240,6 +246,7 @@ namespace UdpClientStructure
                             Console.WriteLine("Receive UserDef");
                             Console.WriteLine("Receive Sum = {0}", MachIDEchoPack.Sum);
 
+                            udpSender = true;
                         }
 
                         if (cmdState == (ushort)ME.machcon)
@@ -275,6 +282,7 @@ namespace UdpClientStructure
                             Console.WriteLine("Receive MachID = {0}", MachConnectEchoPack.MachID);
                             Console.WriteLine("Receive Sum = {0}", MachIDEchoPack.Sum);
 
+                            udpSender = true;
                         }
 
                         if (cmdState == (ushort)ME.machdata)
@@ -314,6 +322,7 @@ namespace UdpClientStructure
                             Console.WriteLine("Receive DataBuf");
                             Console.WriteLine("Receive Sum = {0}", MachDataEchoPack.Sum);
 
+                            udpSender = true;
                         }
                     }
                 }
