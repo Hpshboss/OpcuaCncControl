@@ -94,7 +94,7 @@ namespace UdpClientStructure
         public byte TypeID;
         public byte SubTypeID;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-        public byte[] Password = new byte[60];
+        public char[] Password = new char[60];
         public byte Sum;
     }
 
@@ -130,7 +130,7 @@ namespace UdpClientStructure
         public uint Code;
         public uint Len;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 800)]
-        public byte[] DataBuf = new byte[800];
+        public char[] DataBuf = new char[800];
         public byte Sum;
     }
 
