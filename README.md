@@ -1,7 +1,7 @@
 # OpcuaCncControl
-## UdpClientStructure資料夾為客戶端基本架構
+## UdpClientStructure資料夾為與Glink連線用之架構
 1.以BinaryWriter為傳輸方法
-## UdpServerStructure資料夾為客戶端基本架構
+## UdpServerStructure資料夾為伺服端基本架構
 1.以BinaryReader為接收方法
 ## UdpStructure資料夾為UDP基本傳輸CLASS架構
 <p>1.以BinaryFormatter為傳輸與接收方法</p>
