@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace UdpClientStructure
 {
+    /*
     [Serializable]
     public class TransferInfo
     {
@@ -21,23 +22,23 @@ namespace UdpClientStructure
             this.Count = Count;
             this.Sum = Sum;
         }
-    }
+    }*/
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class ScanCmdPacket
+    public struct ScanCmdPacket
     {
         //外部
         public ushort ID;
         public ushort Sz;
         public byte Cmd; //its type is char originally
         public ushort Count;
-        public int Sum; //its type is char originally
+        public byte Sum; //its type is char originally
     }
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class ScanEchoPacket
+    public struct ScanEchoPacket
     {
         public ushort ID;
         public ushort Sz;
@@ -48,7 +49,7 @@ namespace UdpClientStructure
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class MachIDCmdPacket
+    public struct MachIDCmdPacket
     {
         public ushort ID;
         public ushort Sz;
@@ -59,7 +60,7 @@ namespace UdpClientStructure
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class MachIDEchoPacket
+    public struct MachIDEchoPacket
     {
         public ushort ID;
         public ushort Sz;
@@ -72,13 +73,13 @@ namespace UdpClientStructure
         public byte TypeID;
         public byte SubTypeID;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-        public byte[] UserDef = new byte[60];
+        public byte[] UserDef;
         public byte Sum;
     }
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class MachConnectCmdPacket
+    public struct MachConnectCmdPacket
     {
         public ushort ID;
         public ushort Sz;
@@ -94,13 +95,13 @@ namespace UdpClientStructure
         public byte TypeID;
         public byte SubTypeID;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-        public char[] Password = new char[60];
+        public char[] Password;
         public byte Sum;
     }
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class MachConnectEchoPacket
+    public struct MachConnectEchoPacket
     {
         public int ID;
         public int Sz;
@@ -117,7 +118,7 @@ namespace UdpClientStructure
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class MachDataCmdPacket
+    public struct MachDataCmdPacket
     {
         public ushort ID;
         public ushort Sz;
@@ -130,13 +131,13 @@ namespace UdpClientStructure
         public uint Code;
         public uint Len;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 800)]
-        public char[] DataBuf = new char[800];
+        public byte[] DataBuf;
         public byte Sum;
     }
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class MachDataEchoPacket
+    public struct MachDataEchoPacket
     {
         public int ID;
         public int Sz;
@@ -149,21 +150,73 @@ namespace UdpClientStructure
         public uint Code;
         public uint Len;
         public uint ActctLen;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 800)]
-        public byte[] DataBuf = new byte[800];
-        public int Sum;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 532)]
+        public byte[] DataBuf;
+        public byte Sum;
     }
 
     [Serializable]
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class WIRE_MMI_INF01
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    public struct LaserPACKET  //雷射封包結構體
     {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-        public int[] FLAG = new int[16];
-        UInt64 DATA_TIME;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 776)]
-        public int[] OrtherData = new int[776];
+        public uint DateTime;   //系統時間
+        public uint TotalWCount;   //累計工作時間
+        public uint ThisWCount;   //目前加工時間
+        public byte Unit;
+        public byte CStart;
+        public byte CStop;
+        public byte MemStart;  //MemStart
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+        public char[] Fn;   //加工程式名稱 FileName
+        public uint Nn, Bn;
+        public ushort MMode;   //系統模式
+        public ushort MStatus;   //機台狀態
+        public ushort SCode, Ms;   //抓資料的兩個變數
+                                    //------------------------------
+        public LaserCOORD Coord;
+        public LaserSDATA SData;
     }
+
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    public struct LaserSDATA//<64Byte> //雷射本身加工參數
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public char[] Flag;
+        public byte Mode;      //CW\QCW
+        public byte Gas;       //Air,N2,O2
+        public ushort Power;     //0~10000 unit:0.01%
+        public ushort ResW;     //不理他
+        public uint Dura;     //0~50000 unit:0.001ms 佔空比
+        public uint Hz;       //0~5000000 unit:0.01hz
+        public uint RefHt;    //pulse
+        public uint Dead;     //pulse
+        public ushort AirBar;       //0~50000 unit:0.001bar
+        public ushort Kp;        //0~50000 unit:0.001 
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        public char[] Comment;  //comment
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 28)]
+        public char[] ResvB1;
+    }
+
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    public struct LaserCOORD  //各軸參數
+    {
+        public PT9L Mp, Pp, Lp, Dp;                     //座標群
+        public PT9L RefWp, OftWp;
+        public double Speed;                          //移動速度
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+        public uint[] Rpm;      //各軸轉速
+    }
+    //---------------------------------
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    public struct PT9L
+    {
+        public int x, y, z, a, b, c, u, v, w;
+    }
+
     public enum ME
     {
         Yes = 1,
