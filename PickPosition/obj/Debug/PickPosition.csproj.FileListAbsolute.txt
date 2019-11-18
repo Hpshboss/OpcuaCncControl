@@ -17,3 +17,12 @@ D:\SmartFactory\PickPosition\obj\Debug\PickPosition.Properties.Resources.resourc
 D:\SmartFactory\PickPosition\obj\Debug\PickPosition.csproj.GenerateResource.cache
 D:\SmartFactory\PickPosition\obj\Debug\PickPosition.exe
 D:\SmartFactory\PickPosition\obj\Debug\PickPosition.pdb
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\bin\Debug\PickPosition.exe.config
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\bin\Debug\PickPosition.exe
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\bin\Debug\PickPosition.pdb
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.Form1.resources
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.Properties.Resources.resources
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.csproj.GenerateResource.cache
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.csproj.CoreCompileInputs.cache
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.exe
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.pdb

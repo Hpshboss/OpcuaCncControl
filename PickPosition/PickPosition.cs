@@ -481,7 +481,9 @@ namespace PickPosition
                                     (LaserPack.Coord.Mp.c).ToString() + "," +
                                     (LaserPack.Coord.Mp.u).ToString() + "," +
                                     (LaserPack.Coord.Mp.v).ToString() + "," +
-                                    (LaserPack.Coord.Mp.w).ToString() + "");
+                                    (LaserPack.Coord.Mp.w).ToString() + "," +
+                                    (LaserPack.Coord.Speed).ToString()
+                                    );
                                 records++;
                                 if (records % 500 == 0)
                                 {
@@ -532,7 +534,7 @@ namespace PickPosition
                     FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
                     TextWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Time,x,y,z,a,b,c,u,v,w");
+                    sw.WriteLine("Time,x,y,z,a,b,c,u,v,w,feed rate");
                     foreach (string eachLine in mpBuffer)
                     {
                         sw.WriteLine("{0}", eachLine);
@@ -549,7 +551,7 @@ namespace PickPosition
                     FileStream fs = new FileStream(@"C:\temp\temp.csv", FileMode.OpenOrCreate);
                     TextWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Time,x,y,z,a,b,c,u,v,w");
+                    sw.WriteLine("Time,x,y,z,a,b,c,u,v,w,feed rate");
                     foreach (string eachLine in mpBuffer)
                     {
                         sw.WriteLine("{0}", eachLine);
