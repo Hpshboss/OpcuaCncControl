@@ -227,7 +227,7 @@ namespace PickPosition
 
                         if (cmdState == (ushort)ME.machconE)
                         {
-                            Form1.textMessage = "Picking...";
+                            Form1.textMessage += "\r\nPicking...";
                             count += 1;
                             Console.WriteLine("Sending the forth requested number of packets to the destination, Send()...{0}", count);
 
@@ -303,7 +303,7 @@ namespace PickPosition
                             {
                                 Console.WriteLine(ex.GetType().FullName);
                                 Console.WriteLine(ex.Message);
-                                Form1.textMessage = ex.Message;
+                                Form1.textMessage += "\r\n" + ex.Message;
                                 cmdState = 0;
                             }
                             udpSender = true;
@@ -361,7 +361,7 @@ namespace PickPosition
                             {
                                 Console.WriteLine(ex.GetType().FullName);
                                 Console.WriteLine(ex.Message);
-                                Form1.textMessage = ex.Message;
+                                Form1.textMessage += "\r\n" + ex.Message;
                                 cmdState = (ushort)ME.scanE;
                             }
                             udpSender = true;
@@ -415,7 +415,7 @@ namespace PickPosition
                             {
                                 Console.WriteLine(ex.GetType().FullName);
                                 Console.WriteLine(ex.Message);
-                                Form1.textMessage = ex.Message;
+                                Form1.textMessage += "\r\n" + ex.Message;
                                 cmdState = (ushort)ME.machidE;
                             }
                             udpSender = true;
@@ -472,29 +472,53 @@ namespace PickPosition
                                 Console.WriteLine("Receive Sum = {0}", MachDataEchoPack.Sum);
 
                                 LaserPack = (LaserPACKET)ByteToStruct(MachDataEchoPack.DataBuf, typeof(LaserPACKET));
-                                mpBuffer.Add((LaserPack.DateTime).ToString() + "," +
-                                    (LaserPack.Coord.Mp.x).ToString() + "," +
-                                    (LaserPack.Coord.Mp.y).ToString() + "," +
-                                    (LaserPack.Coord.Mp.z).ToString() + "," +
-                                    (LaserPack.Coord.Mp.a).ToString() + "," +
-                                    (LaserPack.Coord.Mp.b).ToString() + "," +
-                                    (LaserPack.Coord.Mp.c).ToString() + "," +
-                                    (LaserPack.Coord.Mp.u).ToString() + "," +
-                                    (LaserPack.Coord.Mp.v).ToString() + "," +
-                                    (LaserPack.Coord.Mp.w).ToString() + "," +
-                                    (LaserPack.Coord.Speed).ToString()
+                                /*
+                                string eachLineplus = "N";
+                                foreach(byte element in MachDataEchoPack.DataBuf)
+                                {
+                                    eachLineplus += (element).ToString();
+                                }
+                                //mpBuffer.Add(eachLineplus);
+                                mpBuffer.Add(BitConverter.ToString(MachDataEchoPack.DataBuf));
+                                */
+                                byte start = 0;
+                                if (MachDataEchoPack.DataBuf[96] == 0xFC) { start = 1; } else { start = 0; }
+                                mpBuffer.Add(
+                                    BitConverter.ToInt32(MachDataEchoPack.DataBuf, 8).ToString() + "," +
+                                    BitConverter.ToInt32(MachDataEchoPack.DataBuf, 100).ToString() + "," +
+                                    BitConverter.ToInt32(MachDataEchoPack.DataBuf, 104).ToString() + "," +
+                                    BitConverter.ToInt32(MachDataEchoPack.DataBuf, 108).ToString() + "," +
+                                    BitConverter.ToDouble(MachDataEchoPack.DataBuf, 316).ToString() + "," +
+                                    start.ToString()
                                     );
+                                /*
+                                mpBuffer.Add((LaserPack.ThisWCount).ToString() + "," +
+                                    (LaserPack.Coord.Dp.x) + "," +
+                                    (LaserPack.Coord.Dp.y) + "," +
+                                    (LaserPack.Coord.Dp.z) + "," +
+                                    (LaserPack.Coord.Mp.x) + "," +
+                                    (LaserPack.Coord.Mp.y) + "," +
+                                    (LaserPack.Coord.Mp.z).ToString() + "," +
+                                    (LaserPack.Coord.Lp.x).ToString() + "," +
+                                    (LaserPack.Coord.Lp.y).ToString() + "," +
+                                    (LaserPack.Coord.Speed).ToString() + "," +
+                                    (LaserPack.Fn[9]).ToString() + "," +
+                                    (LaserPack.SCode).ToString() + "," +
+                                    (LaserPack.CStop).ToString()
+                                    );
+                                    */
+                                Thread.Sleep(50);
                                 records++;
                                 if (records % 500 == 0)
                                 {
-                                    Form1.textMessage = "Picking...(have picked above " + records.ToString() + " records)";
+                                    Form1.textMessage += "\r\nPicking...(have picked above " + records.ToString() + " records)";
                                 }
                             }
                             catch (Exception ex)
                             {
                                 Console.WriteLine(ex.GetType().FullName);
                                 Console.WriteLine(ex.Message);
-                                Form1.textMessage = ex.Message;
+                                Form1.textMessage += "\r\n" + ex.Message;
                                 cmdState = (ushort)ME.machconE;
                             }
                             udpSender = true;
@@ -507,12 +531,12 @@ namespace PickPosition
             {
                 Console.WriteLine("Socket error occurred: {0}", err.Message);
                 Console.WriteLine("Stack: {0}", err.StackTrace);
-                Form1.textMessage = "IP or Port " + err.Message;
+                Form1.textMessage += "\r\nIP or Port " + err.Message;
                 Form1.ResetThread();
             }
             catch (Exception err)
             {
-                Form1.textMessage = err.Message;
+                Form1.textMessage += "\r\n" +　err.Message;
                 Form1.ResetThread();
             }
             finally
@@ -534,7 +558,7 @@ namespace PickPosition
                     FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
                     TextWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Time,x,y,z,a,b,c,u,v,w,feed rate");
+                    sw.WriteLine("Time,x,y,z,Speed,Cycle Start");
                     foreach (string eachLine in mpBuffer)
                     {
                         sw.WriteLine("{0}", eachLine);
@@ -551,14 +575,14 @@ namespace PickPosition
                     FileStream fs = new FileStream(@"C:\temp\temp.csv", FileMode.OpenOrCreate);
                     TextWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Time,x,y,z,a,b,c,u,v,w,feed rate");
+                    sw.WriteLine("Time,x,y,z,Speed,Cycle Start");
                     foreach (string eachLine in mpBuffer)
                     {
                         sw.WriteLine("{0}", eachLine);
                     }
                     sw.Close();
                     
-                    Form1.textMessage = ex.Message + ", 已先暫存到C:\\temp\\temp.csv";
+                    Form1.textMessage += "\r\n" + ex.Message + ", 已先暫存到C:\\temp\\temp.csv";
                     Form1.textMessage += "\r\nTotal records: " + records.ToString();
                 }
                 

@@ -43,13 +43,15 @@ namespace PickPosition
         {
             PickPosition.flagflag = 0;
             PickThread.Interrupt();
-            textMessage = "Finish";
+            textMessage += "\r\nFinish";
             ResetThread();
         }
         
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            label2.Text = textMessage;
+            textBox2.Text = textMessage;
+            textBox2.SelectionStart = this.textBox2.TextLength;
+            textBox2.ScrollToCaret();
         }
 
         public static void ResetThread()
@@ -58,6 +60,11 @@ namespace PickPosition
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }

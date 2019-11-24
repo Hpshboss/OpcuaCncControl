@@ -26,3 +26,14 @@ C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPositi
 C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.csproj.CoreCompileInputs.cache
 C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.exe
 C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.pdb
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.csprojAssemblyReference.cache
+D:\Users\s9303\source\repos\PickPosition\PickPosition\bin\Debug\PickPosition.exe.config
+D:\Users\s9303\source\repos\PickPosition\PickPosition\bin\Debug\PickPosition.exe
+D:\Users\s9303\source\repos\PickPosition\PickPosition\bin\Debug\PickPosition.pdb
+D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.csprojAssemblyReference.cache
+D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.Form1.resources
+D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.Properties.Resources.resources
+D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.csproj.GenerateResource.cache
+D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.csproj.CoreCompileInputs.cache
+D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.exe
+D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.pdb
