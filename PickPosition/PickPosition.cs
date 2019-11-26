@@ -90,13 +90,24 @@ namespace PickPosition
 
             #endregion
             //PackageSetting(ref ScanCmdPack, ref MachIDCmdPack, ref MachConnectCmdPack, ref MachDataCmdPack);
-            
+
             //設定本機IP位址，可用IPAddress.Any自行尋找，或直接使用IPAddress.Parse("X.X.X.X")設定
             IPAddress localAddress = IPAddress.Parse("10.1.10.210");
-            //如果為傳送端，使用IPAddress.Parse("X.X.X.X")設定
             IPAddress destAddress = IPAddress.Parse("10.1.10.200");
             ushort portNumber = 0x869C;
-
+            try
+            {
+                localAddress = IPAddress.Parse(Form1.localIP);
+                //如果為傳送端，使用IPAddress.Parse("X.X.X.X")設定
+                destAddress = IPAddress.Parse(Form1.lasorIP);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetType().FullName);
+                Console.WriteLine(ex.Message);
+                Form1.textMessage += "\r\n" + ex.Message;
+                Form1.ResetThread();
+            }
 
             //*******************選擇是否為傳送端*******************//
             bool udpSender = true;
@@ -140,7 +151,7 @@ namespace PickPosition
                         Console.WriteLine("Connect() is OK...");
                     }
 
-                    udpSocket.Client.ReceiveTimeout = 500;
+                    udpSocket.Client.ReceiveTimeout = 100;
 
                     if (udpSender == true)
                     {
@@ -472,42 +483,19 @@ namespace PickPosition
                                 Console.WriteLine("Receive Sum = {0}", MachDataEchoPack.Sum);
 
                                 LaserPack = (LaserPACKET)ByteToStruct(MachDataEchoPack.DataBuf, typeof(LaserPACKET));
-                                /*
-                                string eachLineplus = "N";
-                                foreach(byte element in MachDataEchoPack.DataBuf)
-                                {
-                                    eachLineplus += (element).ToString();
-                                }
-                                //mpBuffer.Add(eachLineplus);
-                                mpBuffer.Add(BitConverter.ToString(MachDataEchoPack.DataBuf));
-                                */
+                                
                                 byte start = 0;
                                 if (MachDataEchoPack.DataBuf[96] == 0xFC) { start = 1; } else { start = 0; }
                                 mpBuffer.Add(
-                                    BitConverter.ToInt32(MachDataEchoPack.DataBuf, 8).ToString() + "," +
+                                    DateTime.Now.ToString("HH: mm:ss.ffff") + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 100).ToString() + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 104).ToString() + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 108).ToString() + "," +
                                     BitConverter.ToDouble(MachDataEchoPack.DataBuf, 316).ToString() + "," +
                                     start.ToString()
                                     );
-                                /*
-                                mpBuffer.Add((LaserPack.ThisWCount).ToString() + "," +
-                                    (LaserPack.Coord.Dp.x) + "," +
-                                    (LaserPack.Coord.Dp.y) + "," +
-                                    (LaserPack.Coord.Dp.z) + "," +
-                                    (LaserPack.Coord.Mp.x) + "," +
-                                    (LaserPack.Coord.Mp.y) + "," +
-                                    (LaserPack.Coord.Mp.z).ToString() + "," +
-                                    (LaserPack.Coord.Lp.x).ToString() + "," +
-                                    (LaserPack.Coord.Lp.y).ToString() + "," +
-                                    (LaserPack.Coord.Speed).ToString() + "," +
-                                    (LaserPack.Fn[9]).ToString() + "," +
-                                    (LaserPack.SCode).ToString() + "," +
-                                    (LaserPack.CStop).ToString()
-                                    );
-                                    */
-                                Thread.Sleep(50);
+                                
+                                Thread.Sleep(5);
                                 records++;
                                 if (records % 500 == 0)
                                 {

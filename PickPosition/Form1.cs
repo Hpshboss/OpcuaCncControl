@@ -16,7 +16,8 @@ namespace PickPosition
         static Thread PickThread = new Thread(PickPosition.Picking);
         public static string localPath;
         public static string textMessage = "Connecting...";
-        
+        public static string localIP;
+        public static string lasorIP;
 
         public Form1()
         {
@@ -27,6 +28,8 @@ namespace PickPosition
         {
             if(PickThread.IsAlive == false)
             {
+                localIP = textBox3.Text;
+                lasorIP = textBox4.Text;
                 timer1.Enabled = true;
                 localPath = textBox1.Text;
                 PickPosition.flagflag = 1;
@@ -65,6 +68,11 @@ namespace PickPosition
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label4_Click(object sender, EventArgs e)
         {
 
         }
