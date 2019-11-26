@@ -487,7 +487,7 @@ namespace PickPosition
                                 byte start = 0;
                                 if (MachDataEchoPack.DataBuf[96] == 0xFC) { start = 1; } else { start = 0; }
                                 mpBuffer.Add(
-                                    DateTime.Now.ToString("HH: mm:ss.ffff") + "," +
+                                    DateTime.Now.ToString("HH: mm:ss.ffffzzz") + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 100).ToString() + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 104).ToString() + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 108).ToString() + "," +

@@ -26,7 +26,7 @@ namespace PickPosition
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if(PickThread.IsAlive == false)
+            if(PickPosition.flagflag == 0)
             {
                 localIP = textBox3.Text;
                 lasorIP = textBox4.Text;

@@ -36,3 +36,4 @@ D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.csp
 D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.csproj.CoreCompileInputs.cache
 D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.exe
 D:\Users\s9303\source\repos\PickPosition\PickPosition\obj\Debug\PickPosition.pdb
+C:\Users\USER\Documents\GitHub\OpcuaCncControl\PickPosition\obj\Debug\PickPosition.csprojAssemblyReference.cache
