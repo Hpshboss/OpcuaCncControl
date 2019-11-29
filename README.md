@@ -1,4 +1,5 @@
 # OpcuaCncControl
+## PickPosition資料夾為林志光教授實驗室需求，抓取雷射切割機部分資料
 ## UdpClientStructure資料夾為與Glink連線用之架構
 1.以BinaryWriter為傳輸方法
 ## UdpServerStructure資料夾為伺服端基本架構

@@ -17,7 +17,8 @@ namespace PickPosition
     class PickPosition
     {
         //宣告結束按鈕旗標
-        public static short flagflag = 1;
+        public static short flagflag = 0;
+        public static DateTime startTime;
         public static void Picking()
         {
             ScanCmdPacket ScanCmdPack = new ScanCmdPacket();
@@ -124,6 +125,7 @@ namespace PickPosition
             int count = 0;
             List<string> mpBuffer = new List<string>();
             long records = 0;
+            
             
 
             try
@@ -421,6 +423,8 @@ namespace PickPosition
 
                                 MachConnectEchoPack.Sum = br.ReadByte();
                                 Console.WriteLine("Receive Sum = {0}", MachIDEchoPack.Sum);
+
+                                startTime = Convert.ToDateTime(DateTime.Now);
                             }
                             catch (Exception ex)
                             {
@@ -487,7 +491,8 @@ namespace PickPosition
                                 byte start = 0;
                                 if (MachDataEchoPack.DataBuf[96] == 0xFC) { start = 1; } else { start = 0; }
                                 mpBuffer.Add(
-                                    DateTime.Now.ToString("HH: mm:ss.ffffzzz") + "," +
+                                    DateTime.Now + "," +
+                                    Convert.ToDateTime(DateTime.Now).Subtract(startTime).TotalMilliseconds + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 100).ToString() + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 104).ToString() + "," +
                                     BitConverter.ToInt32(MachDataEchoPack.DataBuf, 108).ToString() + "," +
@@ -546,7 +551,7 @@ namespace PickPosition
                     FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
                     TextWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Time,x,y,z,Speed,Cycle Start");
+                    sw.WriteLine("Date Time,Picking Time(ms),x(0.0001mm),y(0.0001mm),z(0.0001mm),Speed,Cycle Start");
                     foreach (string eachLine in mpBuffer)
                     {
                         sw.WriteLine("{0}", eachLine);
@@ -563,7 +568,7 @@ namespace PickPosition
                     FileStream fs = new FileStream(@"C:\temp\temp.csv", FileMode.OpenOrCreate);
                     TextWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Time,x,y,z,Speed,Cycle Start");
+                    sw.WriteLine("Date Time,Picking Time(ms),x(0.0001mm),y(0.0001mm),z(0.0001mm),Speed,Cycle Start");
                     foreach (string eachLine in mpBuffer)
                     {
                         sw.WriteLine("{0}", eachLine);
